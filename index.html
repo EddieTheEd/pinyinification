@@ -71,19 +71,7 @@
       
       var { pinyin } = pinyinPro;
       
-      let checkbox = document.getElementById("pinyinonly");
-      let pinyinonly = false;
-      let textbox = document.getElementById("chineseinput"); 
-
-      checkbox.addEventListener("change", () => {
-        if (checkbox.checked) {
-          pinyinonly = true;
-        } else {
-          pinyinonly = false;
-        }
-      }); 
-
-      textbox.addEventListener('input', function() {
+      function pinyinification(){
         let chineseinput = document.getElementById("chineseinput").value;
         let inputarray = chineseinput.split("\n");
         let outputarray = []
@@ -99,8 +87,14 @@
         }
         let input = document.getElementById('input');
         let output = document.getElementById('output');
-        input.innerHTML = inputarray.join("<br>")
-        output.innerHTML = outputarray.join("<br>")  
+        input.innerHTML = inputarray.join("<br>");
+        output.innerHTML = outputarray.join("<br>");
+      }
+      
+      let textbox = document.getElementById("chineseinput"); 
+
+      textbox.addEventListener('input', function() {
+        pinyinification(); 
       });
 
       function toggleContent1() {
@@ -111,6 +105,19 @@
           var content = document.querySelector('.content2');
           content.style.display = (content.style.display === 'block') ? 'none' : 'block';
       }
+
+      let checkbox = document.getElementById("pinyinonly");
+      let pinyinonly = false;
+
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+          pinyinonly = true;
+          pinyinification();
+        } else {
+          pinyinonly = false;
+          pinyinification();
+        }
+      }); 
     </script>
 
 
