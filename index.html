@@ -7,13 +7,16 @@
     <title>Pinyinification</title>
     
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Onest&display=swap');
+    </style>
+    <style>
       body {background-color: #151515;}
-      p,h1,h2,h3,label {color: #dddddd;}
+      p,h1,h2,h3,label,strong {color: #dddddd; font-family: 'Onest', sans-serif;}
       button {background-color: #2a2727; color: #dddddd; font-weight: bold; font-size: 18px;}
       textarea {background-color: #2a2727; color: #dddddd;}
       a {color: #dd6d25;}
       .collapsible1, .collapsible2 {cursor: pointer; padding: 10px; width: 100%; border: none; text-align: left; outline: none; font-size: 15px; background-color: #2a2727; color: #dddddd; text-decoration: underline;}
-      .content1, .content2 {padding: 0 18px;display: none; overflow: hidden; background-color: #2a2727;}
+      .content1, .content2 {padding: 0 18px;display: none; overflow: hidden; background-color: #2a2727; padding-left: 30px;} 
     </style>
     
   </head>
@@ -54,6 +57,7 @@
       <p>Why can you use this offline? Well, this may be surprising, but this is actually all in <strong>one file</strong>! Yes, all the code to convert the pinyin is in this singular index file, which you can see on the <a href="https://github.com/EddieTheEd/pinyinification/">github repo</a>! You can just download the index.html file and uh yeah. Open it and enjoy.</p> 
       <p>It is probably very trivial to make different modes of pinyin conversion i.e. character to just pinyin, character to character then pinyin on the next line, etc. But I'm not going to. I'm lazy.</p>
       <p>I may or may not have used ChatGPT for the collapsible thingies. Like I said, I'm lazy.</p> 
+      <strong>NOTE: The font will need internet. Couldn't think of a way around it. :(</strong>
     </div>
 
     </main>
