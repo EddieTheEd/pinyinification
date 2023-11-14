@@ -36,7 +36,8 @@
 
     <hr>
     <p>Type Chinese characters in this box!!! (Using a new line will separate the characters as shown in the use cases)</p>
-    <input type="checkbox" id="pinyinonly" ><label for="pinyinonly">Pinyin only</label> <input type="checkbox" id="language" ><label for="language">Japanese(tick) or Chinese(not ticked)</label>
+    <input type="checkbox" id="pinyinonly" ><label for="pinyinonly">Pinyin/Romanji only</label> <input type="checkbox" id="language" ><label for="language">Japanese(tick) or Chinese(not ticked)</label> <input type="checkbox" id="pinyinplacement" ><label for="pinyinplacement">Pinyin/Romanji on the next line</label>
+
     <br>
     <br>
     <textarea type="text" id="chineseinput" rows="10" cols="100"></textarea>
@@ -77,7 +78,8 @@
     <script>
       var { pinyin } = pinyinPro;
       language = "Chinese";
-      
+      nextline = false;
+
       function pinyinification(){
         let chineseinput = document.getElementById("chineseinput").value;
         let inputarray = chineseinput.split("\n");
@@ -93,7 +95,12 @@
           if (pinyinonly) {
             outputtext = pinyintext;
           } else {
-            outputtext = chinesetext + " " + pinyintext;
+            if (nextline) {
+    outputtext = chinesetext + "<br>" + pinyintext;
+            } else {
+              outputtext = chinesetext + " " + pinyintext;
+
+            }
           }          
           outputarray.push(outputtext);
         }
@@ -139,6 +146,18 @@
           pinyinification();
         } else {
           language = "Chinese";
+          pinyinification();
+        }
+      });
+
+      let checkbox3 = document.getElementById("pinyinplacement");
+
+      checkbox3.addEventListener("change", () => {
+        if (checkbox3.checked) {
+          nextline = true;
+          pinyinification();
+        } else {
+          nextline = false;
           pinyinification();
         }
       });
