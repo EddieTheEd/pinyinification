@@ -90,7 +90,9 @@
       translating = false;
       
       var API_KEY = localStorage.getItem('API_KEY');
-      if (API_KEY != "null" || API_KEY != null) {
+      
+      if (API_KEY != "null" && API_KEY != null)
+      {
         API_KEY = API_KEY.replace(/['"]+/g, '')
         document.getElementById("apikeyinput").value = API_KEY;
       }
