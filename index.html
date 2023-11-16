@@ -79,26 +79,31 @@
 //# sourceMappingURL=axios.min.js.map
     </script>
     <script>
+      
       var { pinyin } = pinyinPro;
       
       language = "Chinese";
       nextline = false;
       reverse = false;
-      API_KEY = null; 
+      var API_KEY = null; 
       translating = false;
+      
+      var API_KEY = localStorage.getItem('API_KEY');
+      if (API_KEY != "null") {
+        API_KEY = API_KEY.replace(/['"]+/g, '')
+        document.getElementById("apikeyinput").value = API_KEY;
+      }
+      
 
       async function translate(text) {
-        translatedarray = []
-        for (let u = 0; u<text.length; u++) {
-          let res = await axios.post(
-          `https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`,
-          { q: text[u], target: "en" }
-          );
-          let translation = res.data.data.translations[0].translatedText;
-          translatedarray.push(translation);
-        }
+        let res = await axios.post(
+        `https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`,
+        { q: text, target: "en" }
+        );
+        let translation = res.data.data.translations[0].translatedText;
+        translatedarray = translation.split("|");
         return translatedarray;
-    }
+      }
       
       function pinyinification(){
         document.getElementById("outputmessage").innerHTML = "" 
@@ -138,14 +143,19 @@
         output.innerHTML = outputarray.join("<br>");
         if (translating) {
           document.getElementById("outputmessage").innerHTML = "Translating..."
-          translate(inputarray).then(yes => {
+          console.log(inputarray.join("|"));
+          translate(inputarray.join("|")).then(yes => {
             if (outputarray.length != yes.length){
               console.log("Something has gone terribly wrong! Wil retry again. Inputarray: " + inputarray + "Outputarray: " + yes);
               pinyinification();
             } else {
               finalarray = []
               for (let z = 0; z < outputarray.length; z++){
-                final = outputarray[z] + " <strong>" + yes[z] + "</strong>";
+                if (nextline){
+                  final = outputarray[z] + "<br><strong>" + yes[z] + "</strong>";
+                } else{
+                  final = outputarray[z] + " <strong>" + yes[z] + "</strong>";
+                }
                 finalarray.push(final);
               }
             output.innerHTML = finalarray.join("<br>");
@@ -169,6 +179,7 @@
       apiinput.addEventListener('input', function(){
         let input = document.getElementById("apikeyinput").value;
         API_KEY = input;
+        localStorage.setItem('API_KEY', JSON.stringify(API_KEY));
       });
 
       function toggleContent1() {
