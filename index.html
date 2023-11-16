@@ -34,7 +34,7 @@
 
     <hr>
     <p>Type Chinese characters in this box!!! (Using a new line will separate the characters as shown in the use cases)</p>
-    <input type="checkbox" id="pinyinonly" ><label for="pinyinonly">Pinyin/Romanji only</label> <input type="checkbox" id="language" ><label for="language">Japanese(tick) or Chinese(not ticked)</label> <input type="checkbox" id="pinyinplacement" ><label for="pinyinplacement">Pinyin/Romanji on the next line</label>
+    <input type="checkbox" id="pinyinonly" ><label for="pinyinonly">Pinyin/Romanji only</label> <input type="checkbox" id="language" ><label for="language">Japanese(tick) or Chinese(not ticked)</label> <input type="checkbox" id="pinyinplacement" ><label for="pinyinplacement">Pinyin/Romanji on the next line</label> <input type="checkbox" id="reverse" ><label for="reverse">Reverse order (Pinyin/Romanji then characters)</label>  
 
     <br>
     <br>
@@ -74,8 +74,10 @@
     </script>
     <script>
       var { pinyin } = pinyinPro;
+      
       language = "Chinese";
       nextline = false;
+      reverse = false;
 
       function pinyinification(){
         let chineseinput = document.getElementById("chineseinput").value;
@@ -93,10 +95,17 @@
             outputtext = pinyintext;
           } else {
             if (nextline) {
-    outputtext = chinesetext + "<br>" + pinyintext;
+              if (reverse) {
+                outputtext = pinyintext + "<br>" + chinesetext;
+              } else {
+                outputtext = chinesetext + "<br>" + pinyintext;
+              }
             } else {
-              outputtext = chinesetext + " " + pinyintext;
-
+              if (reverse) {
+                outputtext = pinyintext + " " + chinesetext;
+              } else {
+                outputtext = chinesetext + " " + pinyintext;
+              }
             }
           }          
           outputarray.push(outputtext);
@@ -155,6 +164,17 @@
           pinyinification();
         } else {
           nextline = false;
+          pinyinification();
+        }
+      });
+      let checkbox4 = document.getElementById("reverse");
+
+      checkbox4.addEventListener("change", () => {
+        if (checkbox4.checked) {
+          reverse = true;
+          pinyinification();
+        } else {
+          reverse = false;
           pinyinification();
         }
       });
