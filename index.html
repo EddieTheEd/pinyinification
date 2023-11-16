@@ -143,7 +143,6 @@
         output.innerHTML = outputarray.join("<br>");
         if (translating) {
           document.getElementById("outputmessage").innerHTML = "Translating..."
-          console.log(inputarray.join("|"));
           translate(inputarray.join("|")).then(yes => {
             if (outputarray.length != yes.length){
               console.log("Something has gone terribly wrong! Wil retry again. Inputarray: " + inputarray + "Outputarray: " + yes);
