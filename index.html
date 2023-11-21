@@ -33,10 +33,10 @@
     <h3>Translation:</h3>
       <p>This relies on <a href="https://cloud.google.com/translate?hl=en">Google translate's api</a>. You need an API key and an internet connection to translate. <s> You may not be able to use this if you are just using the html file.</s> It seems to work fine on html, but who knows.
       </p>
-    <p>API Key: </p><textarea id="apikeyinput" rows="1" cols="60"></textarea> <input type="checkbox" id="translate" ><label for="translate">Translate</label>
+    <p>API Key: </p><textarea id="apikeyinput" rows="1" cols="60"></textarea> <input type="checkbox" id="translate" ><label for="translate">Translate(default is English)</label> <input type="checkbox" id="translatecn" ><label for="translatecn">Chinese Simplified</label> <input type="checkbox" id="translatejp" ><label for="translatejp">Japanese</label>
     <hr>
     <p>Type Chinese characters in this box!!! (Using a new line will separate the characters as shown in the use cases)</p>
-    <input type="checkbox" id="pinyinonly" ><label for="pinyinonly">Pinyin/Romanji only</label> <input type="checkbox" id="language" ><label for="language">Japanese(tick) or Chinese(not ticked)</label> <input type="checkbox" id="pinyinplacement" ><label for="pinyinplacement">Separate with a line</label> <input type="checkbox" id="reverse" ><label for="reverse">Reverse order (Pinyin/Romanji then characters)</label>  
+    <input type="checkbox" id="pinyinonly" ><label for="pinyinonly">Pinyin/Romanji only</label> <input type="checkbox" id="language" ><label for="language">Japanese(tick) or Chinese(not ticked)</label> <input type="checkbox" id="pinyinplacement" ><label for="pinyinplacement">Separate with a line</label> <input type="checkbox" id="reverse" ><label for="reverse">Reverse order (Pinyin/Romanji then characters)</label> <input type="checkbox" id="nopinyin" ><label for="nopinyin">No pinyin</label>   
 
     <br>
     <br>
@@ -88,6 +88,9 @@
       reverse = false;
       var API_KEY = null; 
       translating = false;
+      cn = false;
+      jp = false;
+      nopinyin = false;
       
       var API_KEY = localStorage.getItem('API_KEY');
       
@@ -99,10 +102,22 @@
       
 
       async function translate(text) {
-        let res = await axios.post(
-        `https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`,
-        { q: text, target: "en" }
-        );
+        if (cn){
+          res = await axios.post(
+          `https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`,
+          { q: text, target: "zh" }
+          );
+        } else if (jp) {
+          res = await axios.post(
+          `https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`,
+          { q: text, target: "ja" }
+          );
+        } else  {
+          res = await axios.post(
+          `https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`,
+          { q: text, target: "en" }
+          );
+        }
         let translation = res.data.data.translations[0].translatedText;
         translatedarray = translation.split("|");
         return translatedarray;
@@ -114,13 +129,19 @@
         let inputarray = chineseinput.split("\n");
         outputarray = []
         for (let i = 0; i < inputarray.length; i++) {
-          if (language=="Chinese"){
+          if (!nopinyin) {
+            if (language=="Chinese"){
             pinyintext = pinyin(inputarray[i]);
           }
           else{
             pinyintext = wanakana.toRomaji(inputarray[i]);
           }
-          let chinesetext = inputarray[i];
+          chinesetext = inputarray[i];
+          }
+          else {
+            pinyintext = "";
+            chinesetext = inputarray[i];
+          }
           if (pinyinonly) {
             outputtext = pinyintext;
           } else {
@@ -248,6 +269,39 @@
           pinyinification();
         } else {
           translating = false;
+          pinyinification()
+        }
+      });
+
+      let checkbox6 = document.getElementById("translatecn");
+      checkbox6.addEventListener("change", () => {
+        if (checkbox6.checked) {
+          cn = true;
+          pinyinification();
+        } else {
+          cn = false;
+          pinyinification()
+        }
+      });
+      
+      let checkbox7 = document.getElementById("translatejp");
+      checkbox7.addEventListener("change", () => {
+        if (checkbox7.checked) {
+          jp = true;
+          pinyinification();
+        } else {
+          jp = false;
+          pinyinification()
+        }
+      });
+      
+      let checkbox8 = document.getElementById("nopinyin");
+      checkbox8.addEventListener("change", () => {
+        if (checkbox8.checked) {
+          nopinyin = true;
+          pinyinification();
+        } else {
+          nopinyin = false;
           pinyinification()
         }
       });
