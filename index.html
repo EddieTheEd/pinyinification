@@ -91,6 +91,7 @@
       cn = false;
       jp = false;
       nopinyin = false;
+      blocked = false;
       
       var API_KEY = localStorage.getItem('API_KEY');
       
@@ -124,78 +125,86 @@
       }
       
       function pinyinification(){
-        document.getElementById("outputmessage").innerHTML = "" 
-        let chineseinput = document.getElementById("chineseinput").value;
-        let inputarray = chineseinput.split("\n");
-        outputarray = []
-        for (let i = 0; i < inputarray.length; i++) {
-          if (!nopinyin) {
-            if (language=="Chinese"){
-            pinyintext = pinyin(inputarray[i]);
-          }
-          else{
-            pinyintext = wanakana.toRomaji(inputarray[i]);
-          }
-          chinesetext = inputarray[i];
-          }
-          else {
-            pinyintext = "";
+        console.log(blocked);
+        if (!blocked){
+          document.getElementById("outputmessage").innerHTML = "" 
+          let chineseinput = document.getElementById("chineseinput").value;
+          let inputarray = chineseinput.split("\n");
+          outputarray = []
+          for (let i = 0; i < inputarray.length; i++) {
+            if (!nopinyin) {
+              if (language=="Chinese"){
+              pinyintext = pinyin(inputarray[i]);
+            }
+            else{
+              pinyintext = wanakana.toRomaji(inputarray[i]);
+            }
             chinesetext = inputarray[i];
-          }
-          if (pinyinonly) {
-            outputtext = pinyintext;
-          } else {
-            if (nextline) {
-              if (reverse) {
-                outputtext = pinyintext + "<br>" + chinesetext;
-              } else {
-                outputtext = chinesetext + "<br>" + pinyintext;
-              }
-            } else {
-              if (reverse) {
-                outputtext = pinyintext + " " + chinesetext;
-              } else {
-                outputtext = chinesetext + " " + pinyintext;
-              }
             }
-          }
-          outputarray.push(outputtext);
-        }
-        let input = document.getElementById('input');
-        let output = document.getElementById('output');
-        input.innerHTML = inputarray.join("<br>");
-        output.innerHTML = outputarray.join("<br>");
-        if (translating) {
-          document.getElementById("outputmessage").innerHTML = "Translating..."
-          translate(inputarray.join("|")).then(yes => {
-            if (outputarray.length != yes.length){
-              console.log("Something has gone terribly wrong! Wil retry again. Inputarray: " + inputarray + "Outputarray: " + yes);
-              pinyinification();
+            else {
+              pinyintext = "";
+              chinesetext = inputarray[i];
+            }
+            if (pinyinonly) {
+              outputtext = pinyintext;
             } else {
-              finalarray = []
-              for (let z = 0; z < outputarray.length; z++){
-                if (nextline){
-                  final = outputarray[z] + "<br><strong>" + yes[z] + "</strong>";
-                } else{
-                  final = outputarray[z] + " <strong>" + yes[z] + "</strong>";
+              if (nextline) {
+                if (reverse) {
+                  outputtext = pinyintext + "<br>" + chinesetext;
+                } else {
+                  outputtext = chinesetext + "<br>" + pinyintext;
                 }
-                finalarray.push(final);
+              } else {
+                if (reverse) {
+                  outputtext = pinyintext + " " + chinesetext;
+                } else {
+                  outputtext = chinesetext + " " + pinyintext;
+                }
               }
-            output.innerHTML = finalarray.join("<br>");
-            document.getElementById("outputmessage").innerHTML = "Translation complete!"
-            yes = [];
-            inputarray = [];
-            outputarray = [];
-            finalarray = [];
             }
-          })
+            outputarray.push(outputtext);
+          }
+          let input = document.getElementById('input');
+          let output = document.getElementById('output');
+          input.innerHTML = inputarray.join("<br>");
+          output.innerHTML = outputarray.join("<br>");
+          if (translating) {
+            document.getElementById("outputmessage").innerHTML = "Translating..."
+            translate(inputarray.join("|")).then(yes => {
+              if (outputarray.length != yes.length){
+                console.log("Something has gone terribly wrong! Wil retry again. Inputarray: " + inputarray + "Outputarray: " + yes);
+                console.log("Will wait 1.5 seconds before trying again.");
+                blocked = true;
+                console.log(blocked);
+                setTimeout(() => {
+                  blocked = false;
+                }, "1500");
+              } else {
+                finalarray = []
+                for (let z = 0; z < outputarray.length; z++){
+                  if (nextline){
+                    final = outputarray[z] + "<br><strong>" + yes[z] + "</strong>";
+                  } else{
+                    final = outputarray[z] + " <strong>" + yes[z] + "</strong>";
+                  }
+                  finalarray.push(final);
+                }
+              output.innerHTML = finalarray.join("<br>");
+              document.getElementById("outputmessage").innerHTML = "Translation complete!"
+              yes = [];
+              inputarray = [];
+              outputarray = [];
+              finalarray = [];
+              }
+            })
+          }
         }
       }
       
       let textbox = document.getElementById("chineseinput"); 
 
       textbox.addEventListener('input', function() {
-        pinyinification(); 
+        pinyinification();
       });
       
       let apiinput = document.getElementById("apikeyinput");
