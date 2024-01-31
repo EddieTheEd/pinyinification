@@ -36,7 +36,7 @@
     <p>API Key: </p><textarea id="apikeyinput" rows="1" cols="60"></textarea> <input type="checkbox" id="translate" ><label for="translate">Translate(default is English)</label> <input type="checkbox" id="translatecn" ><label for="translatecn">Chinese Simplified</label> <input type="checkbox" id="translatejp" ><label for="translatejp">Japanese</label>
     <hr>
     <p>Type Chinese characters in this box!!! (Using a new line will separate the characters as shown in the use cases)</p>
-    <input type="checkbox" id="pinyinonly" ><label for="pinyinonly">Pinyin/Romanji only</label> <input type="checkbox" id="language" ><label for="language">Japanese(tick) or Chinese(not ticked)</label> <input type="checkbox" id="pinyinplacement" ><label for="pinyinplacement">Separate with a line</label> <input type="checkbox" id="reverse" ><label for="reverse">Reverse order (Pinyin/Romanji then characters)</label> <input type="checkbox" id="nopinyin" ><label for="nopinyin">No pinyin</label>   
+    <input type="checkbox" id="pinyinonly" ><label for="pinyinonly">Pinyin/Romanji only</label> <input type="checkbox" id="language" ><label for="language">Japanese(tick) or Chinese(not ticked)</label> <input type="checkbox" id="pinyinplacement" ><label for="pinyinplacement">Separate with a line</label> <input type="checkbox" id="reverse" ><label for="reverse">Reverse order (Pinyin/Romanji then characters)</label> <input type="checkbox" id="nopinyin" ><label for="nopinyin">No pinyin</label>  <input type="checkbox" id="charthenpin" ><label for="charthenpin">Characters, pinyin same line</label>    <input type="checkbox" id="pinthentran" ><label for="pinthentran">Pinyin/char, translation same line</label>  
 
     <br>
     <br>
@@ -92,6 +92,8 @@
       jp = false;
       nopinyin = false;
       blocked = false;
+      charthenpinyin = false;
+      pinthentran = false;
       
       var API_KEY = localStorage.getItem('API_KEY');
       
@@ -188,7 +190,25 @@
                   } else{
                     final = outputarray[z] + " <strong>" + yes[z] + "</strong>";
                   }
-                  finalarray.push(final);
+                  if (charthenpinyin) {
+                    let count = 0;
+                    final = final.replace(/<br>/gi, match => {
+                     count++;
+                     return count === 1 ? " " : match;
+                    });
+                    finalarray.push(final);
+                  } 
+                  else if (pinthentran) {
+                    let count = 0;
+                    final = final.replace(/<br>/gi, match => {
+                     count++;
+                     return count === 2 ? " " : match;
+                    });
+                    finalarray.push(final);
+                  } 
+                  else {
+                    finalarray.push(final);
+                  }
                 }
               output.innerHTML = finalarray.join("<br>");
               document.getElementById("outputmessage").innerHTML = "Translation complete!"
@@ -312,6 +332,26 @@
           pinyinification();
         } else {
           nopinyin = false;
+          pinyinification()
+        }
+      });
+      let checkbox9 = document.getElementById("charthenpin");
+      checkbox9.addEventListener("change", () => {
+        if (checkbox9.checked) {
+          charthenpinyin = true;
+          pinyinification();
+        } else {
+          charthenpinyin = false;
+          pinyinification()
+        }
+      });
+      let checkbox10 = document.getElementById("pinthentran");
+      checkbox10.addEventListener("change", () => {
+        if (checkbox10.checked) {
+          pinthentran = true;
+          pinyinification();
+        } else {
+          pinthentran = false;
           pinyinification()
         }
       });
