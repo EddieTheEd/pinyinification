@@ -23,11 +23,11 @@
   <body>
     <main>
       <h1>Pinyinification</h1>  
-      <p>This will convert Chinese(and Japanese!) characters to the exact same Chinese(or Japanese) characters with their pinyin(or Romanji(I learnt something new today)) next to them. So you can have the characters and the pinyin(or Romanji) right next to each other.</p><p>Is this useful? Who knows? It's good if you have like a bunch of characters spaced out and you want to have each individual pinyin(or Romanji) but all the characters are on the same line. So its only really good for specific cases. Google translate is probably better :(</p><p>Now that I've linked this to the Google translate api this may as well be Google translate lite. I guess this is just Google translate, with a potential offchance of being quicker....?? And also more features in the output?!?!? I dunno man</p> 
+      <p>This will convert Chinese(and Japanese) characters to the exact same Chinese/Japanese characters with their pinyin/Romanji next to them. So you can have the characters and the pinyin/Romanji right next to each other.</p><p>Is this useful? Who knows? It's good if you have like a bunch of characters spaced out and you want to have each individual pinyin/Romanji but all the characters are on the same line. So its only really good for specific cases. Google translate is unfortunately a better tool.</p><p>Now that I've linked this to the Google translate api this may as well be Google translate lite but with slightly more features.</p> 
 
-    <button class="collapsible1" onclick="toggleContent1()">Use cases (you can click me)(fred)(i even made the cursor change to a pointer cmon man)</button>
+    <button class="collapsible1" onclick="toggleContent1()">Use cases (you can click me!)</button>
     <div class="content1">
-      <p>Suppose you have the following list of vocabulary:</p><p>环境<br>保护<br>环（境）保（护）<br>资源<br>能源<br>造成<br>严重<br>解决<br>发展<br>周<br>环保周<br>安排（活动）<br>关于</p><p>Using this thingy, it becomes:</p><p>环境 huán jìng<br>保护 bǎo hù<br>环（境）保（护） huán （ jìng ） bǎo （ hù ）<br>资源 zī yuán<br>能源 néng yuán<br>造成 zào chéng<br>严重 yán zhòng<br>解决 jiě jué<br>发展 fā zhǎn<br>周 zhōu<br>环保周 huán bǎo zhōu<br>安排（活动） ān pái （ huó dòng ）<br>关于 guān yú</p><p>So I guess its good for learning characters with pinyin.</p>
+      <p>Suppose you have the following list of vocabulary:</p><p>环境<br>保护<br>环（境）保（护）<br>资源<br>能源<br>造成<br>严重<br>解决<br>发展<br>周<br>环保周<br>安排（活动）<br>关于</p><p>Using this tool, it becomes:</p><p>环境 huán jìng<br>保护 bǎo hù<br>环（境）保（护） huán （ jìng ） bǎo （ hù ）<br>资源 zī yuán<br>能源 néng yuán<br>造成 zào chéng<br>严重 yán zhòng<br>解决 jiě jué<br>发展 fā zhǎn<br>周 zhōu<br>环保周 huán bǎo zhōu<br>安排（活动） ān pái （ huó dòng ）<br>关于 guān yú</p><p>So I guess its good for learning characters with pinyin.</p>
     </div>
     <hr>
     <h3>Translation:</h3>
@@ -35,7 +35,7 @@
       </p>
     <p>API Key: </p><textarea id="apikeyinput" rows="1" cols="60"></textarea> <input type="checkbox" id="translate" ><label for="translate">Translate(default is English)</label> <input type="checkbox" id="translatecn" ><label for="translatecn">Chinese Simplified</label> <input type="checkbox" id="translatejp" ><label for="translatejp">Japanese</label>
     <hr>
-    <p>Type Chinese characters in this box!!! (Using a new line will separate the characters as shown in the use cases)</p>
+    <p>Type Chinese characters in this box! (Using a new line will separate the characters as shown in the use cases)</p>
     <input type="checkbox" id="pinyinonly" ><label for="pinyinonly">Pinyin/Romanji only</label> <input type="checkbox" id="language" ><label for="language">Japanese(tick) or Chinese(not ticked)</label> <input type="checkbox" id="pinyinplacement" ><label for="pinyinplacement">Separate with a line</label> <input type="checkbox" id="reverse" ><label for="reverse">Reverse order (Pinyin/Romanji then characters)</label> <input type="checkbox" id="nopinyin" ><label for="nopinyin">No pinyin</label>  <input type="checkbox" id="charthenpin" ><label for="charthenpin">Characters, pinyin same line</label>    <input type="checkbox" id="pinthentran" ><label for="pinthentran">Pinyin/char, translation same line</label>  
 
     <br>
@@ -55,13 +55,10 @@
 
     <button class="collapsible2" onclick="toggleContent2()">Credits and technical things</button>
     <div class="content2">
-      <p>This is a pretty "unrefined" use of <a href="https://pinyin-pro.cn/en/">pinyin-pro</a>, and imports the pinyin-pro library which is actually in this html file. As this is a static file, i.e. its not going to be updated (It could be updated. But I'm not going to deal with Github Actions for something as silly as this). If you are curious, the pinyin-pro script comes from <a href="https://unpkg.com/pinyin-pro@3.12.0/dist/index.js">this version</a>.</p>
-      <p>That means you do <strong>NOT</strong> need to be online to use this. If you have a (potentially offline) web browser you can use it(anything that can run javascript and html). There are probably bugs. I'm not gonna fix them. I got bored and I had an issue with getting pinyin into my obsidian so I made this.</p>
-      <p>Why can you use this offline? Well, this may be surprising, but this is actually all in <strong>one file</strong>! Yes, all the code to convert the pinyin is in this singular index file, which you can see on the <a href="https://github.com/EddieTheEd/pinyinification/">github repo</a>! You can just download the index.html file and uh yeah. Open it and enjoy.</p> 
-      <p>It is probably very trivial to make different modes of pinyin conversion i.e. character to just pinyin, character to character then pinyin on the next line, etc. But I'm not going to. I'm lazy.</p>
-      <p>I may or may not have used ChatGPT for the collapsible thingies. Like I said, I'm lazy.</p> 
-      <p>Hey. So it's pretty late right now. But an idea popped into my head. What about... Japanese pinyin?!?! Which I learnt today is called Romanji. I used <a href="https://github.com/WaniKani/WanaKana">another js library</a> and popped it in, and tada it works. Hiragana <strong>does not work</strong> though. I think, I can't read Japanese.</p> 
-      <p>Things don't work... I don't know why... I don't know why. Everything on my end works. It's their fault >:(</p>
+      <p>This is a pretty "unrefined" use of <a href="https://pinyin-pro.cn/en/">pinyin-pro</a>, and imports the pinyin-pro library which is actually in this html file. As this is a static file, i.e. its not going to be updated (It could be updated. But I'm not going to deal with Github Actions for something like this). If you are curious, the pinyin-pro script comes from <a href="https://unpkg.com/pinyin-pro@3.12.0/dist/index.js">this version</a>.</p>
+      <p>That means you do <strong>NOT</strong> need to be online to use this. If you have a (potentially offline) web browser you can use it(anything that can run javascript and html). There are probably bugs, so beware! :)</p>
+      <p>Why can you use this offline? Well, this may be surprising, but this is actually all in <strong>one file</strong>! Yes, all the code to convert the pinyin is in this singular index file, which you can see on the <a href="https://github.com/EddieTheEd/pinyinification/">github repo</a>! You can just download the index.html file, open it and enjoy.</p> 
+      <p>Japanese pinyin, aka Romanji is now an option. I used <a href="https://github.com/WaniKani/WanaKana">another js library</a> and popped it in, and lo and behold it works. Hiragana <strong>does not work</strong> though. I think, I can't read Japanese.</p> 
       <p>Translate works. It uses <a href="https://cloud.google.com/translate?hl=en">Google translate's api</a> with some help from <a href="https://github.com/axios/axios">axios</a>. Thank you Junsung for donating your debit card credentials 🙏</p>
     </div>
 
